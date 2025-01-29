@@ -66,6 +66,43 @@
         .asset .change.down {
             color: red;
         }
+        .add-crypto-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .add-crypto-menu input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .add-crypto-menu button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
@@ -73,7 +110,7 @@
     <div class="balance">Wallet Balance: <span id="balance">113.93</span></div>
     <div class="actions">
         <button onclick="send()">Send</button>
-        <button onclick="addCrypto()">Add Crypto</button>
+        <button onclick="showAddCryptoMenu()">Add Crypto</button>
         <button onclick="exchange()">Exchange</button>
         <button onclick="p2pMarket()">P2P Market</button>
     </div>
@@ -99,6 +136,15 @@
         </div>
     </div>
 
+    <!-- Меню для добавления криптовалюты -->
+    <div class="overlay" id="overlay"></div>
+    <div class="add-crypto-menu" id="addCryptoMenu">
+        <h3>Добавить криптовалюту</h3>
+        <input type="number" id="cryptoAmount" placeholder="Введите количество">
+        <button onclick="addCrypto()">Добавить</button>
+        <button onclick="hideAddCryptoMenu()">Закрыть</button>
+    </div>
+
     <script>
         // Интеграция с Telegram Web Apps API
         const tg = window.Telegram.WebApp;
@@ -117,9 +163,31 @@
             // Здесь можно добавить логику для отправки средств
         }
 
+        function showAddCryptoMenu() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('addCryptoMenu').style.display = 'block';
+        }
+
+        function hideAddCryptoMenu() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('addCryptoMenu').style.display = 'none';
+        }
+
         function addCrypto() {
-            alert("Add Crypto button clicked!");
-            // Здесь можно добавить логику для добавления криптовалюты
+            const amount = parseFloat(document.getElementById('cryptoAmount').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Введите корректное количество!");
+                return;
+            }
+
+            // Обновляем баланс
+            const balanceElement = document.getElementById('balance');
+            let currentBalance = parseFloat(balanceElement.textContent);
+            currentBalance += amount;
+            balanceElement.textContent = currentBalance.toFixed(2);
+
+            // Закрываем меню
+            hideAddCryptoMenu();
         }
 
         function exchange() {
