@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App</title>
+    <title>Wallet Mini App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,19 +16,88 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
-        .button {
+        .balance {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .actions button {
             background-color: #007bff;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .protection {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .assets {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .asset {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .asset .name {
+            font-weight: bold;
+        }
+        .asset .value {
+            color: #333;
+        }
+        .asset .change {
+            color: green;
+        }
+        .asset .change.down {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <div class="header">Добро пожаловать в Mini App!</div>
-    <button class="button" onclick="sendData()">Отправить данные в бота</button>
+    <div class="header">Wallet</div>
+    <div class="balance">Wallet Balance: <span id="balance">113.93</span></div>
+    <div class="actions">
+        <button onclick="send()">Send</button>
+        <button onclick="addCrypto()">Add Crypto</button>
+        <button onclick="exchange()">Exchange</button>
+        <button onclick="p2pMarket()">P2P Market</button>
+    </div>
+    <div class="protection">
+        Add extra protection to your Wallet
+        <button onclick="setupPasscode()">Set up passcode</button>
+    </div>
+    <div class="assets">
+        <div class="asset">
+            <div class="name">Dollars</div>
+            <div class="value">10.00</div>
+            <div class="change">↑0.07%</div>
+        </div>
+        <div class="asset">
+            <div class="name">USDT</div>
+            <div class="value">0</div>
+            <div class="change">-</div>
+        </div>
+        <div class="asset">
+            <div class="name">Toncoin</div>
+            <div class="value">70.00</div>
+            <div class="change">↑0.66%</div>
+        </div>
+    </div>
 
     <script>
         // Интеграция с Telegram Web Apps API
@@ -38,18 +107,45 @@
         tg.ready();
         tg.expand(); // Развернуть Mini App на весь экран
 
-        // Функция для отправки данных в бота
-        function sendData() {
-            const data = {
-                message: "Привет из Mini App!"
-            };
+        // Получение данных пользователя
+        const user = tg.initDataUnsafe.user;
+        console.log("User:", user);
 
-            // Отправляем данные в бота
-            tg.sendData(JSON.stringify(data));
-
-            // Закрываем Mini App после отправки
-            tg.close();
+        // Функции для кнопок
+        function send() {
+            alert("Send button clicked!");
+            // Здесь можно добавить логику для отправки средств
         }
+
+        function addCrypto() {
+            alert("Add Crypto button clicked!");
+            // Здесь можно добавить логику для добавления криптовалюты
+        }
+
+        function exchange() {
+            alert("Exchange button clicked!");
+            // Здесь можно добавить логику для обмена
+        }
+
+        function p2pMarket() {
+            alert("P2P Market button clicked!");
+            // Здесь можно добавить логику для P2P рынка
+        }
+
+        function setupPasscode() {
+            alert("Set up passcode button clicked!");
+            // Здесь можно добавить логику для настройки пароля
+        }
+
+        // Динамическое обновление баланса (пример)
+        function updateBalance(newBalance) {
+            document.getElementById('balance').textContent = newBalance;
+        }
+
+        // Пример обновления баланса через 5 секунд
+        setTimeout(() => {
+            updateBalance("150.00");
+        }, 5000);
     </script>
 </body>
 </html>
